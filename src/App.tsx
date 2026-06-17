@@ -1,27 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.scss';
 import { GoodsList } from './GoodsList';
 
-// import { getAll, get5First, getRed } from './api/goods';
+import { getAll, get5First, getRedGoods } from './api/goods';
+import { Good } from './types/Good';
 // or
 // import * as goodsAPI from './api/goods';
 
-export const App: React.FC = () => (
+export const App: React.FC = () => {
+  const [goods, setGoods] = useState<Good[]>([]);
+
+function loadAllGoods() {
+  setGoods([]); // clear the list before loading new goods
+  getAll().then(setGoods);
+}
+
+function load5FirstGoods() {
+  setGoods([]); // clear the list before loading new goods
+  get5First().then(setGoods);
+}
+
+function loadRedGoods() {
+  setGoods([]); // clear the list before loading new goods
+  getRedGoods().then(setGoods);
+}
+
+  return (
   <div className="App">
     <h1>Dynamic list of Goods</h1>
 
-    <button type="button" data-cy="all-button">
+    <button type="button" data-cy="all-button" onClick={loadAllGoods}>
       Load all goods
     </button>
 
-    <button type="button" data-cy="first-five-button">
+    <button type="button" data-cy="first-five-button" onClick={load5FirstGoods}>
       Load 5 first goods
     </button>
 
-    <button type="button" data-cy="red-button">
+    <button type="button" data-cy="red-button" onClick={loadRedGoods}>
       Load red goods
     </button>
 
-    <GoodsList goods={[]} />
+    <GoodsList goods={goods} />
   </div>
-);
+);}
