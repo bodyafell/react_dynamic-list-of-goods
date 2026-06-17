@@ -10,37 +10,42 @@ import { Good } from './types/Good';
 export const App: React.FC = () => {
   const [goods, setGoods] = useState<Good[]>([]);
 
-function loadAllGoods() {
-  setGoods([]); // clear the list before loading new goods
-  getAll().then(setGoods);
-}
+  const loadAllGoods = React.useCallback(() => {
+    setGoods([]); // clear the list before loading new goods
+    getAll().then(setGoods);
+  }, []);
 
-function load5FirstGoods() {
-  setGoods([]); // clear the list before loading new goods
-  get5First().then(setGoods);
-}
+  const load5FirstGoods = React.useCallback(() => {
+    setGoods([]); // clear the list before loading new goods
+    get5First().then(setGoods);
+  }, []);
 
-function loadRedGoods() {
-  setGoods([]); // clear the list before loading new goods
-  getRedGoods().then(setGoods);
-}
+  const loadRedGoods = React.useCallback(() => {
+    setGoods([]); // clear the list before loading new goods
+    getRedGoods().then(setGoods);
+  }, []);
 
   return (
-  <div className="App">
-    <h1>Dynamic list of Goods</h1>
+    <div className="App">
+      <h1>Dynamic list of Goods</h1>
 
-    <button type="button" data-cy="all-button" onClick={loadAllGoods}>
-      Load all goods
-    </button>
+      <button type="button" data-cy="all-button" onClick={loadAllGoods}>
+        Load all goods
+      </button>
 
-    <button type="button" data-cy="first-five-button" onClick={load5FirstGoods}>
-      Load 5 first goods
-    </button>
+      <button
+        type="button"
+        data-cy="first-five-button"
+        onClick={load5FirstGoods}
+      >
+        Load 5 first goods
+      </button>
 
-    <button type="button" data-cy="red-button" onClick={loadRedGoods}>
-      Load red goods
-    </button>
+      <button type="button" data-cy="red-button" onClick={loadRedGoods}>
+        Load red goods
+      </button>
 
-    <GoodsList goods={goods} />
-  </div>
-);}
+      <GoodsList goods={goods} />
+    </div>
+  );
+};
